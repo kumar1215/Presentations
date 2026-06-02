@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHEC Platform & Add-On Recommendation — Bunzl</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        :root {
+            --primary: #0d1117;
+            --secondary: #161b22;
+            --accent: #238636;
+            --accent-light: #2ea043;
+            --blue: #388bfd;
+            --blue-dark: #1f6feb;
+            --orange: #d29922;
+            --red: #f85149;
+            --text: #c9d1d9;
+            --text-muted: #8b949e;
+            --text-bright: #f0f6fc;
+            --border: #30363d;
+            --card-bg: #0d1117;
+            --page-bg: #010409;
+            --tag-green-bg: rgba(35, 134, 54, 0.15);
+            --tag-green-border: rgba(35, 134, 54, 0.4);
+            --tag-blue-bg: rgba(56, 139, 253, 0.15);
+            --tag-blue-border: rgba(56, 139, 253, 0.4);
+            --tag-orange-bg: rgba(210, 153, 34, 0.15);
+            --tag-orange-border: rgba(210, 153, 34, 0.4);
+            --tag-red-bg: rgba(248, 81, 73, 0.15);
+            --tag-red-border: rgba(248, 81, 73, 0.4);
+            --tag-gray-bg: rgba(139, 148, 158, 0.1);
+            --tag-gray-border: rgba(139, 148, 158, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--page-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .page {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 80px;
+            min-height: 100vh;
+            position: relative;
+            page-break-after: always;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .page:last-child {
+            border-bottom: none;
+        }
+
+        .page-number {
+            position: absolute;
+            bottom: 30px;
+            right: 80px;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 80px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Header styles */
+        .cover-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .gh-logo {
+            width: 48px;
+            height: 48px;
+            background: var(--text-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gh-logo svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary);
+        }
+
+        .cover-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-bright);
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.5px;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            max-width: 700px;
+            line-height: 1.7;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        h2 span {
+            color: var(--accent);
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 36px;
+            max-width: 650px;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 12px;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-included {
+            background: var(--tag-green-bg);
+            border: 1px solid var(--tag-green-border);
+            color: var(--accent-light);
+        }
+
+        .tag-recommended {
+            background: var(--tag-blue-bg);
+            border: 1px solid var(--tag-blue-border);
+            color: var(--blue);
+        }
+
+        .tag-skip {
+            background: var(--tag-gray-bg);
+            border: 1px solid var(--tag-gray-border);
+            color: var(--text-muted);
+        }
+
+        .tag-risk {
+            background: var(--tag-orange-bg);
+            border: 1px solid var(--tag-orange-border);
+            color: var(--orange);
+        }
+
+        .tag-critical {
+            background: var(--tag-red-bg);
+            border: 1px solid var(--tag-red-border);
+            color: var(--red);
+        }
+
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .card-grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .card {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .card-full {
+            grid-column: 1 / -1;
+        }
+
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 14px;
+            flex-shrink: 0;
+        }
+
+        .icon-green { background: var(--tag-green-bg); border: 1px solid var(--tag-green-border); }
+        .icon-blue { background: var(--tag-blue-bg); border: 1px solid var(--tag-blue-border); }
+        .icon-orange { background: var(--tag-orange-bg); border: 1px solid var(--tag-orange-border); }
+        .icon-red { background: var(--tag-red-bg); border: 1px solid var(--tag-red-border); }
+
+        /* Feature list */
+        .feature-list {
+            list-style: none;
+            margin-top: 12px;
+        }
+
+        .feature-list li {
+            font-size: 13.5px;
+            color: var(--text);
+            padding: 6px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            line-height: 1.5;
+        }
+
+        .feature-list li::before {
+            content: '';
+            display: none;
+        }
+
+        .check {
+            color: var(--accent);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .cross {
+            color: var(--red);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .dash {
+            color: var(--text-muted);
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Comparison table */
+        .compare-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .compare-table th {
+            background: var(--secondary);
+            padding: 14px 18px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .compare-table th:first-child {
+            width: 30%;
+        }
+
+        .compare-table td {
+            padding: 12px 18px;
+            font-size: 13.5px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            line-height: 1.55;
+        }
+
+        .compare-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .compare-table .col-label {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .compare-table .winner {
+            background: rgba(35, 134, 54, 0.06);
+        }
+
+        .compare-table .neutral {
+            background: rgba(139, 148, 158, 0.04);
+        }
+
+        .th-winner {
+            color: var(--accent-light) !important;
+        }
+
+        /* Callout */
+        .callout {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        .callout-green {
+            background: var(--tag-green-bg);
+            border: 1px solid var(--tag-green-border);
+            color: var(--text);
+        }
+
+        .callout-blue {
+            background: var(--tag-blue-bg);
+            border: 1px solid var(--tag-blue-border);
+            color: var(--text);
+        }
+
+        .callout-orange {
+            background: var(--tag-orange-bg);
+            border: 1px solid var(--tag-orange-border);
+            color: var(--text);
+        }
+
+        .callout-red {
+            background: var(--tag-red-bg);
+            border: 1px solid var(--tag-red-border);
+            color: var(--text);
+        }
+
+        .callout strong {
+            color: var(--text-bright);
+        }
+
+        .callout-title {
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+
+        .timeline-step {
+            flex: 1;
+            padding: 20px;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .timeline-step:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .timeline-step:last-child {
+            border-radius: 0 12px 12px 0;
+        }
+
+        .timeline-step:not(:last-child) {
+            border-right: none;
+        }
+
+        .timeline-week {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-bright);
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Stack visual */
+        .stack-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stack-row:last-child {
+            border-bottom: none;
+        }
+
+        .stack-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-bright);
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .stack-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .stack-tag {
+            flex-shrink: 0;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+        }
+
+        /* Meta info */
+        .meta {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .meta-item {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .meta-item strong {
+            color: var(--text);
+        }
+
+        /* Gap indicator */
+        .gap-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .gap-fill {
+            height: 6px;
+            border-radius: 3px;
+            background: var(--red);
+        }
+
+        .gap-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* Versus section */
+        .vs-container {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0;
+            align-items: stretch;
+            margin-bottom: 28px;
+        }
+
+        .vs-card {
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .vs-card-winner {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(35, 134, 54, 0.1);
+        }
+
+        .vs-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+        }
+
+        .vs-badge {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+
+        .vs-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 4px;
+        }
+
+        .vs-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .winner-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--tag-green-bg);
+            border: 1px solid var(--tag-green-border);
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--accent-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .small-note {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* Print */
+        @media print {
+            .page {
+                padding: 40px 60px;
+                page-break-after: always;
+                min-height: auto;
+            }
+            body {
+                background: white;
+                color: #24292f;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1: WHAT GHEC GIVES US ==================== -->
+<div class="page">
+
+    <div class="cover-header">
+        <div class="gh-logo">
+            <svg viewBox="0 0 16 16">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+        </div>
+        <div class="cover-label">Platform Recommendation</div>
+    </div>
+
+    <h1>GitHub Enterprise Cloud<br>for <span>New Development</span></h1>
+
+    <p class="subtitle">
+        What GHEC already includes, the one add-on we recommend, and next steps for rollout.
+    </p>
+
+    <div class="meta">
+        <div class="meta-item"><strong>Prepared by:</strong> DevOps Engineering</div>
+        <div class="meta-item"><strong>Date:</strong> June 2026</div>
+        <div class="meta-item"><strong>Status:</strong> Draft for Review</div>
+    </div>
+
+    <h2>What <span>GHEC Includes</span></h2>
+    <p class="section-subtitle">Everything below is included in the base GHEC license. Combined with our existing Copilot license, this covers CI/CD, governance, collaboration, AI-assisted development, and deployment.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon icon-green">&#9654;</div>
+            <h3>CI/CD Platform <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> GitHub Actions — native CI/CD with 22,000+ marketplace actions</li>
+                <li><span class="check">&#10003;</span> 50,000 Actions minutes/month on hosted runners</li>
+                <li><span class="check">&#10003;</span> Self-hosted runner support — reuse existing infrastructure at zero compute cost</li>
+                <li><span class="check">&#10003;</span> Reusable Workflows — define once, use across all repos</li>
+                <li><span class="check">&#10003;</span> Required Workflows — enforce CI org-wide, no repo-level opt-in needed</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-green">&#128274;</div>
+            <h3>Security Baseline <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> Dependabot — automated vulnerability alerts + fix PRs for NuGet and npm</li>
+                <li><span class="check">&#10003;</span> Dependency Graph — full visibility of direct and transitive dependencies</li>
+                <li><span class="check">&#10003;</span> Secret scanning on public repositories</li>
+                <li><span class="dash">&mdash;</span> <em style="color:var(--text-muted)">Private repo secret scanning requires GHAS add-on (see Page 2)</em></li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-green">&#128220;</div>
+            <h3>Governance & Compliance <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> SAML SSO + SCIM — Azure AD integration, auto-provision users</li>
+                <li><span class="check">&#10003;</span> Advanced Audit Log + API — full action trail, streamable to SIEM</li>
+                <li><span class="check">&#10003;</span> Org-level Rulesets — branch/tag governance across all repos from one place</li>
+                <li><span class="check">&#10003;</span> Repository Rulesets — stackable, visible to non-admins, importable</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-green">&#128101;</div>
+            <h3>Collaboration & Code Review <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> CODEOWNERS — auto-assign reviewers by file path, enforced at merge</li>
+                <li><span class="check">&#10003;</span> Merge Queue — sequences and tests PR merges, prevents broken main</li>
+                <li><span class="check">&#10003;</span> Required Reviews — configurable approvals, dismiss stale reviews</li>
+                <li><span class="check">&#10003;</span> Draft PRs, Auto-merge, PR Templates</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-green">&#128640;</div>
+            <h3>Deployment & Infrastructure <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> Environments — named targets (dev, QA, staging, prod) with scoped secrets</li>
+                <li><span class="check">&#10003;</span> Protection Rules — required reviewers, wait timers, branch restrictions</li>
+                <li><span class="check">&#10003;</span> OIDC — short-lived tokens for Azure/AWS/GCP, no static credentials</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-green">&#128230;</div>
+            <h3>Packages & Extras <span class="tag tag-included">Included</span></h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> GitHub Packages — host NuGet, npm, Docker (50 GB included)</li>
+                <li><span class="check">&#10003;</span> GitHub Projects v2 — boards, tables, roadmap views</li>
+                <li><span class="check">&#10003;</span> GitHub Discussions, Pages, CLI, Mobile</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout callout-green">
+        <div class="callout-title">GHEC + Copilot cover CI/CD, governance, collaboration, AI-assisted development, and deployment.</div>
+        The one significant gap is <strong>security scanning for private repositories</strong> — SAST, secret scanning with push protection, and org-wide security visibility. That's the add-on we recommend next.
+    </div>
+
+    <div class="page-footer">Bunzl DevOps Engineering &mdash; GHEC Platform Recommendation &mdash; June 2026</div>
+    <div class="page-number">1 / 3</div>
+</div>
+
+
+<!-- ==================== PAGE 2: GHAS — THE ONE ADD-ON WE NEED ==================== -->
+<div class="page">
+
+    <h2>Recommended Add-On: <span>GitHub Advanced Security</span></h2>
+    <p class="section-subtitle">GHAS is the only paid add-on we recommend. It addresses our most critical gap — we have had zero security scanning since August 2022.</p>
+
+    <div class="card-grid">
+        <div class="card">
+            <div class="card-icon icon-blue">&#128269;</div>
+            <h3>Code Security — CodeQL SAST</h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> Static analysis with 2,000+ security queries for C#, TypeScript, JavaScript</li>
+                <li><span class="check">&#10003;</span> Zero-config default setup — auto-detects languages, runs on every PR</li>
+                <li><span class="check">&#10003;</span> Deep semantic analysis — tracks data flow through ASP.NET MVC, Entity Framework, and DI patterns</li>
+                <li><span class="check">&#10003;</span> Copilot Autofix — AI-generated fix suggestions for every alert (leverages our existing Copilot license)</li>
+                <li><span class="check">&#10003;</span> Dependency Review — blocks PRs introducing vulnerable packages</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-icon icon-blue">&#128272;</div>
+            <h3>Secret Protection</h3>
+            <ul class="feature-list">
+                <li><span class="check">&#10003;</span> Secret scanning on private repos — 200+ secret types detected</li>
+                <li><span class="check">&#10003;</span> Push Protection — blocks secrets <strong>before</strong> they enter Git history</li>
+                <li><span class="check">&#10003;</span> Auto-revocation — notifies Azure, AWS, GitHub to revoke leaked tokens</li>
+                <li><span class="check">&#10003;</span> AI credential detection — catches hardcoded passwords that regex misses</li>
+                <li><span class="check">&#10003;</span> Custom patterns — define Bunzl-specific secret formats</li>
+            </ul>
+        </div>
+
+        <div class="card card-full">
+            <div class="card-icon icon-blue">&#128202;</div>
+            <h3>Security Overview Dashboard</h3>
+            <p>Organization-level view aggregating all security alerts across every repo. Prioritization by severity and exploitability. Shows the top 10% most critical alerts first. Provides auditable evidence for compliance (SOC 2, ISO 27001, customer security questionnaires).</p>
+        </div>
+    </div>
+
+    <div class="callout callout-red">
+        <div class="callout-title">Why push protection matters</div>
+        Without push protection, a committed secret is already in Git history by the time it's detected. Removing it requires force-pushing to rewrite history, rotating the compromised credential, and assessing whether it was exposed during the window between commit and detection. GHAS push protection prevents this entirely — the secret never reaches the repository.
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>What about free alternatives?</h3>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px; line-height:1.7;">
+        Open-source tools like <strong style="color:var(--text)">Semgrep</strong> (SAST) and <strong style="color:var(--text)">Gitleaks</strong> (secret scanning) exist, but carry significant trade-offs:
+    </p>
+
+    <div class="card-grid">
+        <div class="card">
+            <h3 style="font-size:14px;">Limitations of free SAST (Semgrep)</h3>
+            <ul class="feature-list">
+                <li><span class="cross">&#10007;</span> Pattern-based only — weaker at tracking data flow across .NET method boundaries vs CodeQL's semantic analysis</li>
+                <li><span class="cross">&#10007;</span> Higher false positives — requires ongoing rule tuning to prevent alert fatigue</li>
+                <li><span class="cross">&#10007;</span> No auto-fix — developers manually research CVEs and write fixes</li>
+                <li><span class="cross">&#10007;</span> No centralized dashboard — per-repo alerts only</li>
+                <li><span class="cross">&#10007;</span> Ongoing maintenance — monthly version updates, rule tuning, scan troubleshooting</li>
+                <li><span class="cross">&#10007;</span> Community support only — no vendor SLA on detection coverage</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h3 style="font-size:14px;">Limitations of free secret scanning (Gitleaks)</h3>
+            <ul class="feature-list">
+                <li><span class="cross">&#10007;</span> <strong>No push protection</strong> — secrets detected after commit, already in Git history</li>
+                <li><span class="cross">&#10007;</span> No auto-revocation — manual credential rotation per incident</li>
+                <li><span class="cross">&#10007;</span> Regex-only — cannot catch unstructured credentials (passwords, connection strings)</li>
+                <li><span class="cross">&#10007;</span> Manual pattern updates — new secret types go undetected until added</li>
+                <li><span class="cross">&#10007;</span> Each leak triggers incident response: history rewrite + rotation + exposure assessment</li>
+                <li><span class="cross">&#10007;</span> Harder to defend in compliance audits — no vendor-backed SLA</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="callout callout-orange">
+        <div class="callout-title">The hidden cost of "free"</div>
+        Free tools require ongoing DevOps investment — setup, maintenance, tuning, and incident response. They deliver weaker .NET coverage, carry no vendor SLA, and critically lack push protection. The operational overhead of maintaining free tools narrows the real savings considerably compared to the GHAS license.
+    </div>
+
+    <div class="page-footer">Bunzl DevOps Engineering &mdash; GHEC Platform Recommendation &mdash; June 2026</div>
+    <div class="page-number">2 / 3</div>
+</div>
+
+
+<!-- ==================== PAGE 3: RECOMMENDATION + NEXT STEPS ==================== -->
+<div class="page">
+
+    <h2>Our Recommendation: <span>GHEC + GHAS</span></h2>
+    <p class="section-subtitle">The complete platform stack — what's included, what we add, and what we defer.</p>
+
+    <div class="card" style="margin-bottom:28px; padding:28px;">
+        <div class="stack-row">
+            <span class="stack-name">GitHub Actions (CI/CD)</span>
+            <span class="stack-desc">Build, test, scan, deploy — native platform, 50K minutes/month</span>
+            <span class="stack-tag"><span class="tag tag-included">GHEC Included</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">Dependabot</span>
+            <span class="stack-desc">Automated vulnerability alerts and dependency update PRs for NuGet + npm</span>
+            <span class="stack-tag"><span class="tag tag-included">GHEC Included</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">Org Rulesets + Merge Queue</span>
+            <span class="stack-desc">Branch governance, naming enforcement, required checks, automated merge sequencing</span>
+            <span class="stack-tag"><span class="tag tag-included">GHEC Included</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">Environments + OIDC</span>
+            <span class="stack-desc">Deployment targets with approval gates, short-lived cloud authentication</span>
+            <span class="stack-tag"><span class="tag tag-included">GHEC Included</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">SSO + Audit Log</span>
+            <span class="stack-desc">Azure AD integration, auto-provisioning, full action audit trail</span>
+            <span class="stack-tag"><span class="tag tag-included">GHEC Included</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">GitHub Copilot</span>
+            <span class="stack-desc">AI code completions, chat, PR review, agent mode, Autofix for security alerts</span>
+            <span class="stack-tag"><span class="tag tag-included">Already Licensed</span></span>
+        </div>
+        <div class="stack-row" style="background:var(--tag-blue-bg); margin:0 -28px; padding: 14px 28px; border-radius:0;">
+            <span class="stack-name">CodeQL SAST + Autofix</span>
+            <span class="stack-desc">Deep security scanning for C#, TypeScript, JS — Copilot generates fix suggestions</span>
+            <span class="stack-tag"><span class="tag tag-recommended">GHAS Add-On</span></span>
+        </div>
+        <div class="stack-row" style="background:var(--tag-blue-bg); margin:0 -28px; padding: 14px 28px; border-radius:0;">
+            <span class="stack-name">Secret Scanning + Push Protection</span>
+            <span class="stack-desc">Blocks secrets before commit, auto-revokes leaked credentials</span>
+            <span class="stack-tag"><span class="tag tag-recommended">GHAS Add-On</span></span>
+        </div>
+        <div class="stack-row" style="background:var(--tag-blue-bg); margin:0 -28px; padding: 14px 28px; border-radius:0;">
+            <span class="stack-name">Security Overview Dashboard</span>
+            <span class="stack-desc">Org-wide security posture, alert prioritization, compliance evidence</span>
+            <span class="stack-tag"><span class="tag tag-recommended">GHAS Add-On</span></span>
+        </div>
+        <div class="stack-row">
+            <span class="stack-name">Quality Gates</span>
+            <span class="stack-desc">Coverage thresholds, lint enforcement, dependency audits via Actions + rulesets</span>
+            <span class="stack-tag"><span class="tag tag-included">Free Tooling</span></span>
+        </div>
+        <div class="stack-row" style="border-bottom:none;">
+            <span class="stack-name">Release Automation</span>
+            <span class="stack-desc">Automated versioning + changelogs via Release Please</span>
+            <span class="stack-tag"><span class="tag tag-included">Free Tooling</span></span>
+        </div>
+    </div>
+
+
+    <div class="divider" style="margin:24px 0;"></div>
+
+    <h3 style="font-size:20px; margin-bottom:16px;">Decisions Required</h3>
+
+    <div class="card-grid card-grid-3" style="margin-bottom:24px;">
+        <div class="card">
+            <h3 style="font-size:14px;">1. Approve GHAS procurement</h3>
+            <p>GHAS is the only add-on to the existing GHEC platform. It fills the security scanning gap with CodeQL SAST, secret protection with push protection, and org-wide security visibility.</p>
+        </div>
+        <div class="card">
+            <h3 style="font-size:14px;">2. Rollout scope and priority</h3>
+            <p>Which new repositories onboard first? Define priority order so CI/CD templates and workflows can be tailored to the first projects.</p>
+        </div>
+        <div class="card">
+            <h3 style="font-size:14px;">3. SonarCloud <span class="tag tag-skip" style="margin-left:6px;">Optional</span></h3>
+            <p>SonarCloud can be added alongside GHAS for code quality metrics — duplication detection, complexity scoring, and maintainability grades (A-F). Not required, but available if needed.</p>
+        </div>
+    </div>
+
+    <div class="callout callout-green">
+        <div class="callout-title">Summary</div>
+        <strong>GHEC</strong> provides our CI/CD, governance, collaboration, and deployment foundation. <strong>GHAS</strong> is the one add-on we need — filling the security scanning gap we've carried since 2022 with zero-config SAST, push protection, and org-wide visibility. Our existing <strong>Copilot</strong> license enhances GHAS with AI-powered auto-fix for security alerts. Quality gates and release automation are covered by free, proven tooling.
+    </div>
+
+    <div class="page-footer">Bunzl DevOps Engineering &mdash; GHEC Platform Recommendation &mdash; June 2026</div>
+    <div class="page-number">3 / 3</div>
+</div>
+
+</body>
+</html>
